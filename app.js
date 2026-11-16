@@ -201,7 +201,7 @@
   }
 
   function isBookUnlocked(bookName) {
-    return Array.isArray(settings.unlockedBooks) && settings.unlockedBooks.includes(bookName);
+    return true; // 권 이동 PIN 잠금 해제: 모든 권을 자유롭게 이동
   }
 
   // 날짜에 해당하는 말씀 가져오기 (직접 입력 > 날짜별 선택 본문 > 현재 열린 권 내 일차 순환)
