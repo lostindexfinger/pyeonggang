@@ -1,0 +1,18 @@
+{
+  "name": "날마다평강 - 말씀 한 잎, 하루의 평강",
+  "short_name": "날마다평강",
+  "description": "내 기기에만 이중 암호·영구 저장되는 매일성경 모세오경 말씀묵상(QT) 앱",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#2F4B38",
+  "lang": "ko-KR",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

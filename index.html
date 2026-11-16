@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="날마다평강" />
+  <meta name="theme-color" content="#2F4B38" />
+  <title>날마다평강 - 말씀 한 잎, 하루의 평강</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Hahmlet:wght@400;600&family=IBM+Plex+Sans+KR:wght@400;600&family=Jua&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Nanum+Pen+Script&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;600&family=Sunflower:wght@300;500&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- 상단 헤더 -->
+    <header class="app-header">
+      <div class="brand-group">
+        <div class="brand-logo" aria-hidden="true">
+          <svg viewBox="0 0 512 512" width="24" height="24">
+            <path d="M126 176c0-18 14-32 32-32h82c10 0 16 6 16 14v196c-14-10-32-16-54-16h-44c-18 0-32-14-32-32V176z" fill="#FAF7F2"/>
+            <path d="M386 176c0-18-14-32-32-32h-82c-10 0-16 6-16 14v196c14-10 32-16 54-16h44c18 0 32-14 32-32V176z" fill="#E6E0D5"/>
+            <path d="M256 124c-26 30-38 64-32 96 18-4 32-18 32-38 0 20 14 34 32 38 6-32-6-66-32-96z" fill="#D8A24A"/>
+          </svg>
+        </div>
+        <div>
+          <div class="brand-title">날마다평강 <span style="font-size:11px;font-weight:600;color:var(--accent-primary);">QT</span></div>
+          <div class="brand-subtitle">말씀 한 잎, 오늘 내 마음의 평강</div>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <button class="privacy-pill" id="privacyBadgeBtn" title="내 기기에만 저장됨">
+          <span>🔒 내 기기 전용</span>
+        </button>
+        <button class="icon-btn" id="themeToggleBtn" title="다크모드 전환" aria-label="테마 전환">🌙</button>
+      </div>
+    </header>
+
+    <!-- 상단 스트릭 및 날짜 이동 바 -->
+    <section class="streak-bar">
+      <div class="streak-item">
+        <div class="streak-badge">🔥</div>
+        <div>
+          <div class="streak-text-main" id="headerStreakCount">0일 연속 묵상 중</div>
+          <div class="streak-text-sub">말씀을 가까이하는 복 있는 걸음</div>
+        </div>
+      </div>
+
+      <div class="date-navigator">
+        <button class="date-nav-btn" id="prevDateBtn" title="이전 날짜">‹</button>
+        <button class="current-date-btn" id="currentDateLabel" title="클릭하면 오늘로 이동">오늘</button>
+        <button class="date-nav-btn" id="nextDateBtn" title="다음 날짜">›</button>
+      </div>
+    </section>
+
+    <!-- 메인 영역 -->
+    <main class="main-content">
+      <!-- 탭 1: 오늘의 QT (말씀 본문 + 묵상 노트) -->
+      <section class="tab-panel active" id="tab-today">
+        <!-- 오늘의 말씀 본문 카드 -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="badge-tag" id="passageThemeBadge">매일성경 · 창세기</span>
+              <h1 class="passage-title" id="passageTitle">혼돈에서 질서로</h1>
+              <div class="passage-ref" id="passageRef">창세기 1:1-13</div>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
+              <button class="small-btn" id="openBookIndexBtn">📚 모세오경 목차</button>
+              <button class="small-btn" id="editPassageBtn">✏️ 직접 입력</button>
+            </div>
+          </div>
+
+          <p class="passage-summary" id="passageSummary"></p>
+
+          <div id="godSectionWrap" class="devotional-section">
+            <div class="devotional-heading">🌿 하나님은 어떤 분입니까?</div>
+            <div class="verse-list" id="godSectionList"></div>
+          </div>
+
+          <div id="lessonSectionWrap" class="devotional-section">
+            <div class="devotional-heading">💡 내게 주시는 교훈은 무엇입니까?</div>
+            <div class="verse-list" id="lessonSectionList"></div>
+          </div>
+
+          <div class="verse-hint">
+            <span>💡 마음에 와닿는 문단을 터치하면 형광펜으로 표시됩니다.</span>
+          </div>
+
+          <div class="guide-box" id="prayerGuideBox">
+            <div class="guide-label">🙏 오늘의 기도</div>
+            <div class="guide-text" id="guideQuestionText"></div>
+          </div>
+
+          <div class="passage-nav-row">
+            <button type="button" class="small-btn" id="prevPassageBtn">‹ 이전 말씀</button>
+            <span id="passageProgressText" style="font-size: 12px; color: var(--text-muted);">1 / 370</span>
+            <button type="button" class="small-btn" id="nextPassageBtn">다음 말씀 ›</button>
+          </div>
+        </article>
+
+        <!-- 묵상 노트 작성 영역 -->
+        <div class="qt-step-list">
+          <div class="qt-step-card">
+            <div class="qt-step-header">
+              <span class="step-pill">★</span>
+              <span class="qt-step-title">오늘 나에게 주신 한 줄 제목</span>
+            </div>
+            <input
+              type="text"
+              class="qt-input"
+              id="qtSummaryTitle"
+              placeholder="예: 시냇가에 심은 나무처럼 말씀 안에 거하기"
+            />
+          </div>
+
+          <div class="qt-step-card">
+            <div class="qt-step-header">
+              <span class="step-pill">1</span>
+              <span class="qt-step-title">관찰 (Observation)</span>
+            </div>
+            <div class="qt-step-desc">본문에서 하나님은 어떤 분이신가요? 눈에 띄는 단어와 약속은 무엇인가요?</div>
+            <textarea
+              class="qt-textarea"
+              id="qtObservation"
+              placeholder="말씀 본문을 천천히 읽으며 발견한 내용을 적어보세요..."
+            ></textarea>
+          </div>
+
+          <div class="qt-step-card">
+            <div class="qt-step-header">
+              <span class="step-pill">2</span>
+              <span class="qt-step-title">느낌 및 묵상 (Meditation)</span>
+            </div>
+            <div class="qt-step-desc">오늘 내 삶의 상황에 비추어 볼 때 주님이 주시는 마음과 깨달음은 무엇인가요?</div>
+            <textarea
+              class="qt-textarea"
+              id="qtMeditation"
+              placeholder="나에게 건네시는 주님의 세미한 음성과 깨달음을 기록해 보세요..."
+            ></textarea>
+          </div>
+
+          <div class="qt-step-card">
+            <div class="qt-step-header">
+              <span class="step-pill">3</span>
+              <span class="qt-step-title">적용 (Application)</span>
+            </div>
+            <div class="qt-step-desc">오늘 하루 구체적으로 실천할 수 있는 작은 순종 한 가지는 무엇인가요?</div>
+            <textarea
+              class="qt-textarea"
+              id="qtApplication"
+              placeholder="오늘 바로 실천할 수 있는 구체적인 행동을 적어보세요..."
+            ></textarea>
+            <label class="action-check-row">
+              <input type="checkbox" id="qtActionDone" />
+              <span>✨ 오늘 결단한 적용 내용을 실제로 실천했습니다!</span>
+            </label>
+          </div>
+
+          <div class="qt-step-card">
+            <div class="qt-step-header">
+              <span class="step-pill">4</span>
+              <span class="qt-step-title">기도와 감사 (Prayer &amp; Gratitude)</span>
+            </div>
+            <div class="qt-step-desc">붙잡은 말씀을 가지고 주님께 드리는 기도와 오늘의 감사를 적어보세요.</div>
+            <textarea
+              class="qt-textarea"
+              id="qtPrayer"
+              placeholder="사랑의 주님, 오늘 말씀을 통해..."
+            ></textarea>
+            <input
+              type="text"
+              class="qt-input"
+              id="qtGratitude"
+              style="margin-top: 8px;"
+              placeholder="🙏 오늘의 한 줄 감사 제목"
+            />
+          </div>
+
+          <div class="save-bar">
+            <button class="primary-btn" id="saveQtBtn">🌿 오늘의 묵상 노트 저장하기</button>
+            <button type="button" class="small-btn" id="openShareModalBtn" style="padding: 14px 14px; font-size: 14px;">📤 공유</button>
+          </div>
+          <div id="saveStatusText" style="font-size: 12px; color: var(--text-muted); text-align: center;">
+            작성 내용은 외부 서버로 전송되지 않고 오직 내 기기에만 저장됩니다.
+          </div>
+        </div>
+      </section>
+
+      <!-- 탭 2: 묵상 캘린더 & 연속 달성 기록 -->
+      <section class="tab-panel" id="tab-calendar">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">🔥 연속 묵상 달성</div>
+            <div><span class="stat-value" id="statStreak">0</span><span class="stat-unit">일째</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">📅 이번 달 묵상</div>
+            <div><span class="stat-value" id="statMonthly">0</span><span class="stat-unit">회</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">📖 총 누적 묵상</div>
+            <div><span class="stat-value" id="statTotal">0</span><span class="stat-unit">회</span></div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">✨ 말씀 적용 실천율</div>
+            <div><span class="stat-value" id="statActionRate">0</span><span class="stat-unit">%</span></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="calendar-header">
+            <button class="date-nav-btn" id="calPrevMonthBtn">‹</button>
+            <div class="calendar-month-title" id="calendarMonthTitle">2026년 11월</div>
+            <button class="date-nav-btn" id="calNextMonthBtn">›</button>
+          </div>
+
+          <div class="calendar-weekdays">
+            <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+          </div>
+
+          <div class="calendar-grid" id="calendarGrid"></div>
+
+          <div style="margin-top: 12px; font-size: 12px; color: var(--text-muted); display: flex; gap: 14px;">
+            <span>🌿 묵상 작성 완료</span>
+            <span>🌿✨ 말씀 적용 실천 완료</span>
+          </div>
+        </div>
+
+        <!-- 선택한 날짜의 묵상 미리보기 -->
+        <div class="card" id="calendarSelectedPreview"></div>
+      </section>
+
+      <!-- 탭 3: 지난 묵상 기록장 (모아보기 & 검색) -->
+      <section class="tab-panel" id="tab-history">
+        <div class="card">
+          <h2 class="passage-title" style="margin-bottom: 6px;">나의 묵상 기록장</h2>
+          <p style="font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px;">
+            내가 기록한 모든 말씀과 기도를 검색하고 다시 돌아볼 수 있습니다.
+          </p>
+          <input
+            type="search"
+            class="qt-input history-search"
+            id="historySearchInput"
+            placeholder="🔍 본문, 단어, 기도 내용으로 검색..."
+          />
+          <div class="history-list" id="historyListContainer"></div>
+        </div>
+      </section>
+
+      <!-- 탭 4: 설정 & 내 기기 보안 -->
+      <section class="tab-panel" id="tab-privacy">
+        <div class="card">
+          <span class="badge-tag">보기 설정</span>
+          <h2 class="passage-title" style="margin-bottom: 10px;">글자 크기 및 폰트 설정</h2>
+
+          <div class="font-preview-box font-preview-sticky" id="fontPreviewBox">
+            <div class="font-preview-label">실시간 미리보기</div>
+            <div class="font-preview-verse">
+              <span class="verse-num">1절</span>여호와는 나의 목자시니 내게 부족함이 없으리로다 (시편 23:1)
+            </div>
+          </div>
+
+          <div class="setting-group" style="margin-top: 14px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div class="setting-label">글자 크기 (12px ~ 26px)</div>
+              <span class="badge-tag" id="fontSizeValueBadge" style="margin-bottom: 0; font-size: 13px;">16px</span>
+            </div>
+            <div class="font-size-slider-row">
+              <button type="button" class="date-nav-btn" id="fontSizeMinusBtn" title="1px 작게">−</button>
+              <input type="range" id="fontSizeRange" min="12" max="26" step="1" value="16" class="font-size-range" />
+              <button type="button" class="date-nav-btn" id="fontSizePlusBtn" title="1px 크게">+</button>
+            </div>
+            <div class="option-grid option-grid-5" id="fontSizeOptions">
+              <button type="button" class="option-btn" data-size="13">13</button>
+              <button type="button" class="option-btn" data-size="15">15</button>
+              <button type="button" class="option-btn active" data-size="16">16</button>
+              <button type="button" class="option-btn" data-size="18">18</button>
+              <button type="button" class="option-btn" data-size="21">21</button>
+            </div>
+          </div>
+
+          <div class="setting-group" style="margin-top: 14px;">
+            <div class="setting-label">글꼴 선택 (스크롤하여 선택 · 13종)</div>
+            <div class="font-scroll-list" id="fontFamilyOptions">
+              <button type="button" class="option-btn font-list-item active" data-font="gowun-batang" style="font-family: 'Gowun Batang', serif;">
+                <span class="font-name">고운바탕</span>
+                <span class="font-sub">단아한 명조체</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="nanum-myeongjo" style="font-family: 'Nanum Myeongjo', serif;">
+                <span class="font-name">나눔명조</span>
+                <span class="font-sub">클래식 성경 느낌</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="noto-serif" style="font-family: 'Noto Serif KR', serif;">
+                <span class="font-name">본명조 (Noto Serif)</span>
+                <span class="font-sub">정갈하고 묵직한 명조</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="hahmlet" style="font-family: 'Hahmlet', serif;">
+                <span class="font-name">함렛 (Hahmlet)</span>
+                <span class="font-sub">또렷한 현대 명조</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="noto-sans" style="font-family: 'Noto Sans KR', sans-serif;">
+                <span class="font-name">본고딕 (Noto Sans)</span>
+                <span class="font-sub">깔끔한 표준 고딕</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="nanum-gothic" style="font-family: 'Nanum Gothic', sans-serif;">
+                <span class="font-name">나눔고딕</span>
+                <span class="font-sub">부드러운 고딕체</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="ibm-plex" style="font-family: 'IBM Plex Sans KR', sans-serif;">
+                <span class="font-name">IBM 플렉스 산스</span>
+                <span class="font-sub">세련된 모던 고딕</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="gowun-dodum" style="font-family: 'Gowun Dodum', sans-serif;">
+                <span class="font-name">고운돋움</span>
+                <span class="font-sub">따뜻한 돋움체</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="sunflower" style="font-family: 'Sunflower', sans-serif;">
+                <span class="font-name">해바라기</span>
+                <span class="font-sub">가볍고 산뜻한 서체</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="jua" style="font-family: 'Jua', sans-serif;">
+                <span class="font-name">주아체</span>
+                <span class="font-sub">둥글고 친근한 느낌</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="nanum-pen" style="font-family: 'Nanum Pen Script', cursive;">
+                <span class="font-name">나눔손글씨 펜</span>
+                <span class="font-sub">자연스러운 필기체</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="gaegu" style="font-family: 'Gaegu', cursive;">
+                <span class="font-name">개구 (Gaegu)</span>
+                <span class="font-sub">동글동글 손글씨</span>
+              </button>
+              <button type="button" class="option-btn font-list-item" data-font="system">
+                <span class="font-name">기기 기본 글꼴</span>
+                <span class="font-sub">오프라인 100% 동일</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="badge-tag">100% 기기 내 이중 영구 저장</span>
+          <h2 class="passage-title" style="margin-bottom: 8px;">데이터가 절대 지워지지 않게 보호합니다</h2>
+          <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.65;">
+            날마다평강에 기록하시는 모든 묵상 노트와 기도 제목은 <strong>외부 서버로 일절 전송되지 않으며</strong>,
+            현재 기기의 <strong>LocalStorage + IndexedDB 두 곳에 실시간으로 동시 이중 저장</strong>됩니다.
+          </p>
+          <div id="storagePersistStatus" class="font-preview-box" style="margin-top: 10px; font-size: 12.5px; color: var(--accent-primary); font-weight: 600;">
+            🛡️ 이중 안전 저장(LocalStorage + IndexedDB) 작동 중
+          </div>
+          <ul style="margin-top: 12px; padding-left: 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.7;">
+            <li>한쪽 브라우저 캐시가 정리되더라도 다른 저장소에서 자동 복구됩니다.</li>
+            <li>다른 사람의 기기나 외부 인터넷에서는 내 기록에 절대 접근할 수 없습니다.</li>
+            <li>비밀번호를 5회 연속 틀리면 30초간 입력이 잠겨 무차별 대입을 차단합니다.</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3 class="qt-step-title" style="margin-bottom: 6px;">📚 권별 이동 잠금 (PIN 관리)</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 10px;">
+            창세기 외 다른 권(출애굽기·레위기·민수기·신명기)으로 넘어갈 때 PIN을 입력해야 열립니다.
+          </p>
+          <div id="bookLockStatusList" class="book-lock-chips"></div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px;">
+            <button type="button" class="small-btn" id="changeBookPinBtn">🔑 권 이동 PIN 변경</button>
+            <button type="button" class="small-btn" id="relockBooksBtn">🔒 창세기 외 모두 다시 잠그기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="qt-step-title" style="margin-bottom: 6px;">🔐 앱 전체 화면 잠금 (4자리 비밀번호)</h3>
+          <p id="pinStatusText" style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+            🔓 현재 비밀번호 잠금이 설정되지 않았습니다
+          </p>
+          <div style="display: flex; gap: 8px;">
+            <button class="small-btn" id="togglePinSetupBtn">4자리 암호 설정</button>
+            <button class="small-btn" id="lockNowBtn" style="display: none;">지금 화면 잠그기</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="qt-step-title" style="margin-bottom: 6px;">💾 내 기기 백업 파일 보관하기</h3>
+          <p style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">
+            서버에 저장하지 않으므로, 기기를 변경하거나 브라우저 데이터를 초기화하기 전에 내 묵상 노트를 파일(.json)로 내려받아 소장하실 수 있습니다.
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="small-btn" id="exportDataBtn">📥 내 기기로 백업 파일 내려받기</button>
+            <button class="small-btn" id="importDataBtn">📤 백업 파일 불러오기</button>
+            <button type="button" class="small-btn" id="shareAppLinkBtn">🔗 앱 링크 공유하기</button>
+            <button type="button" class="small-btn" id="shareAppFileBtn">📲 앱 파일(.html) 공유</button>
+            <input type="file" id="importFileInput" accept=".json" style="display: none;" />
+          </div>
+          <div style="margin-top: 12px; padding-top: 12px; border-top: 1px dashed var(--border-color);">
+            <label for="appShareUrlInput" style="display: block; font-size: 12.5px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px;">
+              🌐 내 앱 공유 주소 (Netlify 등 웹 주소를 저장하면 로컬에서도 바로 공유됩니다)
+            </label>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <input
+                type="url"
+                id="appShareUrlInput"
+                class="search-input"
+                style="flex: 1; margin-bottom: 0; padding: 8px 10px; font-size: 13px;"
+                placeholder="https://내사이트이름.netlify.app"
+              />
+              <button type="button" class="small-btn" id="saveAppShareUrlBtn" style="white-space: nowrap;">저장</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- 하단 내비게이션 탭 -->
+    <nav class="bottom-nav" aria-label="주요 메뉴">
+      <button class="nav-tab active" data-target="tab-today">
+        <span class="nav-tab-icon">📖</span>
+        <span>오늘의 QT</span>
+      </button>
+      <button class="nav-tab" data-target="tab-calendar">
+        <span class="nav-tab-icon">🗓️</span>
+        <span>묵상 캘린더</span>
+      </button>
+      <button class="nav-tab" data-target="tab-history">
+        <span class="nav-tab-icon">🗂️</span>
+        <span>기록장</span>
+      </button>
+      <button class="nav-tab" data-target="tab-privacy">
+        <span class="nav-tab-icon">⚙️</span>
+        <span>설정·보안</span>
+      </button>
+    </nav>
+  </div>
+
+  <!-- 모세오경 목차 선택 모달 -->
+  <div class="modal-overlay" id="bookIndexModal">
+    <div class="modal-box modal-box-tall">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+        <div>
+          <h3 class="passage-title" style="font-size: 17px;">📚 매일성경전집 1 · 모세오경</h3>
+          <p style="font-size: 12px; color: var(--text-muted);">원하는 권과 본문을 선택해 묵상하세요 (총 370편)</p>
+        </div>
+        <button type="button" class="small-btn" id="closeBookIndexBtn">닫기</button>
+      </div>
+
+      <div class="book-tabs" id="bookIndexTabs"></div>
+
+      <input
+        type="search"
+        class="qt-input"
+        id="bookIndexSearch"
+        style="margin-bottom: 10px; padding: 9px 12px;"
+        placeholder="🔍 제목 또는 성경 장절 검색 (예: 23장, 아브라함, 십계명)"
+      />
+
+      <div class="index-list" id="bookIndexList"></div>
+    </div>
+  </div>
+
+  <!-- 본문 직접 입력/수정 모달 -->
+  <div class="modal-overlay" id="customPassageModal">
+    <div class="modal-box">
+      <h3 class="passage-title" style="margin-bottom: 6px;">말씀 본문 직접 입력</h3>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">
+        교회 주보나 사용 중인 QT 책의 본문을 직접 입력하여 묵상할 수 있습니다.
+      </p>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <input type="text" class="qt-input" id="customTitleInput" placeholder="본문 제목 (예: 선한 목자 되신 주님)" />
+        <input type="text" class="qt-input" id="customRefInput" placeholder="성경 장절 (예: 요한복음 10장 11~15절)" />
+        <input type="text" class="qt-input" id="customGuideInput" placeholder="묵상 질문 (선택사항)" />
+        <textarea
+          class="qt-textarea"
+          id="customVersesInput"
+          style="min-height: 130px;"
+          placeholder="한 줄에 한 절씩 입력해 주세요.&#10;11. 나는 선한 목자라 선한 목자는 양들을 위하여 목숨을 버리거니와"
+        ></textarea>
+        <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 6px;">
+          <button class="small-btn" id="closeCustomModalBtn">취소</button>
+          <button class="primary-btn" id="saveCustomPassageBtn" style="padding: 10px 16px; flex: 0 0 auto;">저장하기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 묵상 외부 공유 모달 -->
+  <div class="modal-overlay" id="shareModal">
+    <div class="modal-box">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+        <h3 class="passage-title" style="font-size: 17px;">📤 묵상 나눔 공유하기</h3>
+        <button type="button" class="small-btn" id="closeShareModalBtn">닫기</button>
+      </div>
+      <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+        외부(카카오톡·문자·메모 등)로 보낼 항목만 선택하세요.
+      </p>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; font-size: 12.5px;">
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" id="shareIncludePassage" checked /> 말씀·기도문
+        </label>
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" id="shareIncludeNotes" checked /> 내 묵상 노트
+        </label>
+        <label style="display: flex; align-items: center; gap: 4px; cursor: pointer;">
+          <input type="checkbox" id="shareIncludeLink" checked /> 앱 링크 포함
+        </label>
+      </div>
+      <textarea
+        class="qt-textarea"
+        id="sharePreviewText"
+        style="min-height: 170px; font-size: 13px;"
+        readonly
+      ></textarea>
+      <div style="display: flex; gap: 8px; margin-top: 12px;">
+        <button type="button" class="small-btn" id="copyShareTextBtn" style="flex: 1; padding: 11px;">📋 텍스트 복사</button>
+        <button type="button" class="primary-btn" id="nativeShareBtn" style="flex: 1.3; padding: 11px; font-size: 14px;">📤 카톡·앱으로 공유</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4자리 PIN 잠금 모달 -->
+  <div class="lock-overlay" id="pinLockOverlay">
+    <div class="modal-box" style="text-align: center;">
+      <div style="font-size: 28px; margin-bottom: 6px;">🔒</div>
+      <h3 class="passage-title" id="pinLockTitle">날마다평강 잠금 해제</h3>
+      <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;" id="pinLockDesc">
+        설정하신 4자리 비밀번호를 입력해 주세요.
+      </p>
+
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+        <div class="pin-dot"></div>
+      </div>
+
+      <div class="pin-keypad">
+        <button class="pin-key" data-key="1">1</button>
+        <button class="pin-key" data-key="2">2</button>
+        <button class="pin-key" data-key="3">3</button>
+        <button class="pin-key" data-key="4">4</button>
+        <button class="pin-key" data-key="5">5</button>
+        <button class="pin-key" data-key="6">6</button>
+        <button class="pin-key" data-key="7">7</button>
+        <button class="pin-key" data-key="8">8</button>
+        <button class="pin-key" data-key="9">9</button>
+        <button class="pin-key" data-key="clear" style="font-size: 13px;">초기화</button>
+        <button class="pin-key" data-key="0">0</button>
+        <button class="pin-key" data-key="back" style="font-size: 14px;">⌫</button>
+      </div>
+
+      <button class="small-btn" id="pinCancelBtn" style="margin-top: 14px; display: none;">취소</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="./data/genesis.js"></script>
+  <script src="./data/exodus.js"></script>
+  <script src="./data/leviticus.js"></script>
+  <script src="./data/numbers.js"></script>
+  <script src="./data/deuteronomy.js"></script>
+  <script src="./data/passages.js"></script>
+  <script src="./app.js"></script>
+  <script>
+    if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
