@@ -380,8 +380,12 @@
       const key = `${prefix}-${idx}`;
       const div = document.createElement("div");
       div.className = "verse-item" + (selectedSet.has(key) ? " selected" : "");
+      const wholeMatch = String(text).match(/^\s*전체\s*:?\s*/);
       const colonIdx = text.indexOf(":");
-      if (colonIdx > 0 && colonIdx < 16) {
+      if (wholeMatch) {
+        const body = text.slice(wholeMatch[0].length).trim();
+        div.innerHTML = `<strong class="verse-whole-label">전체</strong><span>${escapeHtml(body)}</span>`;
+      } else if (colonIdx > 0 && colonIdx < 16) {
         const label = text.slice(0, colonIdx);
         const body = text.slice(colonIdx + 1).trim();
         div.innerHTML = `<span class="verse-num">${escapeHtml(label)}</span><span>${escapeHtml(body)}</span>`;

@@ -1094,3 +1094,29 @@ body {
   border-color: var(--accent-primary);
   color: var(--accent-primary);
 }
+
+/* 묵상 글 첫머리 '전체' 표시: 굵게 + 아래 줄에서 본문 시작 */
+.verse-whole-label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+/* 개역개정 본문 보기 버튼: 한눈에 보이도록 강조 */
+#readBibleBtn {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 12px;
+  box-shadow: 0 2px 6px rgba(198, 134, 46, 0.35);
+}
+
+#readBibleBtn:hover,
+#readBibleBtn:active {
+  background: var(--accent-coral);
+  border-color: var(--accent-coral);
+  color: #fff;
+}

@@ -1115,7 +1115,34 @@ body {
   color: var(--accent-primary);
 }
 
-</style>
+
+/* 묵상 글 첫머리 '전체' 표시: 굵게 + 아래 줄에서 본문 시작 */
+.verse-whole-label {
+  display: block;
+  font-weight: 800;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+/* 개역개정 본문 보기 버튼: 한눈에 보이도록 강조 */
+#readBibleBtn {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 7px 12px;
+  box-shadow: 0 2px 6px rgba(198, 134, 46, 0.35);
+}
+
+#readBibleBtn:hover,
+#readBibleBtn:active {
+  background: var(--accent-coral);
+  border-color: var(--accent-coral);
+  color: #fff;
+}
+
+  </style>
 </head>
 <body>
   <div class="app-shell">
@@ -7852,8 +7879,12 @@ window.QT_DEUTERONOMY = [
       const key = `${prefix}-${idx}`;
       const div = document.createElement("div");
       div.className = "verse-item" + (selectedSet.has(key) ? " selected" : "");
+      const wholeMatch = String(text).match(/^\s*전체\s*:?\s*/);
       const colonIdx = text.indexOf(":");
-      if (colonIdx > 0 && colonIdx < 16) {
+      if (wholeMatch) {
+        const body = text.slice(wholeMatch[0].length).trim();
+        div.innerHTML = `<strong class="verse-whole-label">전체</strong><span>${escapeHtml(body)}</span>`;
+      } else if (colonIdx > 0 && colonIdx < 16) {
         const label = text.slice(0, colonIdx);
         const body = text.slice(colonIdx + 1).trim();
         div.innerHTML = `<span class="verse-num">${escapeHtml(label)}</span><span>${escapeHtml(body)}</span>`;
