@@ -668,7 +668,7 @@
         </div>
         <div style="font-size:13.5px;color:var(--text-secondary);display:flex;flex-direction:column;gap:6px;">
           ${rec.observation ? `<div><strong>[관찰]</strong> ${escapeHtml(rec.observation)}</div>` : ""}
-          ${rec.meditation ? `<div><strong>[느낌]</strong> ${escapeHtml(rec.meditation)}</div>` : ""}
+          ${rec.meditation ? `<div><strong>[묵상 및 깨달음]</strong> ${escapeHtml(rec.meditation)}</div>` : ""}
           ${rec.application ? `<div><strong>[적용]</strong> ${escapeHtml(rec.application)}</div>` : ""}
           ${rec.prayer ? `<div><strong>[기도]</strong> ${escapeHtml(rec.prayer)}</div>` : ""}
         </div>
@@ -854,7 +854,7 @@
       const noteParts = [];
       if (rec.summaryTitle?.trim()) noteParts.push(`★ 한 줄 제목: ${rec.summaryTitle.trim()}`);
       if (rec.observation?.trim()) noteParts.push(`• 관찰: ${rec.observation.trim()}`);
-      if (rec.meditation?.trim()) noteParts.push(`• 묵상: ${rec.meditation.trim()}`);
+      if (rec.meditation?.trim()) noteParts.push(`• 묵상 및 깨달음: ${rec.meditation.trim()}`);
       if (rec.application?.trim()) noteParts.push(`• 적용: ${rec.application.trim()}`);
       if (rec.prayer?.trim()) noteParts.push(`• 나의 기도: ${rec.prayer.trim()}`);
       if (rec.gratitude?.trim()) noteParts.push(`• 감사: ${rec.gratitude.trim()}`);
