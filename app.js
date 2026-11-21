@@ -415,6 +415,21 @@
       document.getElementById("passageTitle").textContent = passage.title;
       document.getElementById("passageRef").textContent = passage.reference;
 
+      const readBibleBtn = document.getElementById("readBibleBtn");
+      if (readBibleBtn) {
+        const BOOK_CODES = {
+          "창세기": "gen",
+          "출애굽기": "exo",
+          "레위기": "lev",
+          "민수기": "num",
+          "신명기": "deu"
+        };
+        const refMatch = String(passage.reference || "").match(/^(창세기|출애굽기|레위기|민수기|신명기)\s*(\d+)/);
+        const bCode = (refMatch && BOOK_CODES[refMatch[1]]) || BOOK_CODES[passage.book] || "gen";
+        const chapNum = (refMatch && refMatch[2]) || "1";
+        readBibleBtn.href = `https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=${bCode}&chap=${chapNum}`;
+      }
+
       const summaryEl = document.getElementById("passageSummary");
       if (summaryEl) {
         summaryEl.textContent = passage.summary || "";
@@ -464,13 +479,15 @@
     }
 
     // 입력 폼 값 채우기
-    document.getElementById("qtSummaryTitle").value = rec.summaryTitle || "";
-    document.getElementById("qtObservation").value = rec.observation || "";
-    document.getElementById("qtMeditation").value = rec.meditation || "";
-    document.getElementById("qtApplication").value = rec.application || "";
-    document.getElementById("qtActionDone").checked = Boolean(rec.actionDone);
-    document.getElementById("qtPrayer").value = rec.prayer || "";
-    document.getElementById("qtGratitude").value = rec.gratitude || "";
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    };
+    setVal("qtObservation", rec.observation || "");
+    setVal("qtMeditation", rec.meditation || "");
+    setVal("qtApplication", rec.application || "");
+    const actionEl = document.getElementById("qtActionDone");
+    if (actionEl) actionEl.checked = Boolean(rec.actionDone);
 
     const statusBadge = document.getElementById("saveStatusText");
     if (statusBadge) {
@@ -536,13 +553,15 @@
 
   function collectFormIntoRecord() {
     const rec = getOrCreateCurrentRecord();
-    rec.summaryTitle = document.getElementById("qtSummaryTitle").value;
-    rec.observation = document.getElementById("qtObservation").value;
-    rec.meditation = document.getElementById("qtMeditation").value;
-    rec.application = document.getElementById("qtApplication").value;
-    rec.actionDone = document.getElementById("qtActionDone").checked;
-    rec.prayer = document.getElementById("qtPrayer").value;
-    rec.gratitude = document.getElementById("qtGratitude").value;
+    const getVal = (id, fallback = "") => {
+      const el = document.getElementById(id);
+      return el ? el.value : fallback;
+    };
+    rec.observation = getVal("qtObservation", rec.observation || "");
+    rec.meditation = getVal("qtMeditation", rec.meditation || "");
+    rec.application = getVal("qtApplication", rec.application || "");
+    const actionEl = document.getElementById("qtActionDone");
+    if (actionEl) rec.actionDone = actionEl.checked;
     const now = new Date();
     rec.updatedAt = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
     return rec;
@@ -1298,13 +1317,10 @@
 
     // 묵상 폼 자동 임시저장 및 저장 버튼
     const formInputs = [
-      "qtSummaryTitle",
       "qtObservation",
       "qtMeditation",
       "qtApplication",
-      "qtActionDone",
-      "qtPrayer",
-      "qtGratitude"
+      "qtActionDone"
     ];
 
     formInputs.forEach((id) => {

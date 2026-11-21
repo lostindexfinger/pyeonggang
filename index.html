@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-  <meta name="apple-mobile-web-app-title" content="날마다평강" />
+  <meta name="apple-mobile-web-app-title" content="날마다, 아멘!" />
   <meta name="theme-color" content="#2F4B38" />
-  <title>날마다평강 - 말씀 한 잎, 하루의 평강</title>
+  <title>날마다, 아멘! - 평강교회QT</title>
   <link rel="icon" type="image/svg+xml" href="./icon.svg" />
   <link rel="apple-touch-icon" href="./icon.svg" />
   <link rel="manifest" href="./manifest.json" />
@@ -32,7 +32,7 @@
           </svg>
         </div>
         <div>
-          <div class="brand-title">날마다평강 <span style="font-size:11px;font-weight:600;color:var(--accent-primary);">QT</span></div>
+          <div class="brand-title">날마다, 아멘! <span style="font-size:11px;font-weight:600;color:var(--accent-primary);">평강교회QT</span></div>
           <div class="brand-subtitle">말씀 한 잎, 오늘 내 마음의 평강</div>
         </div>
       </div>
@@ -73,6 +73,14 @@
               <span class="badge-tag" id="passageThemeBadge">매일성경 · 창세기</span>
               <h1 class="passage-title" id="passageTitle">혼돈에서 질서로</h1>
               <div class="passage-ref" id="passageRef">창세기 1:1-13</div>
+              <a
+                class="small-btn"
+                id="readBibleBtn"
+                href="https://www.bskorea.or.kr/bible/korbibReadpage.php?version=GAE&book=gen&chap=1"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="text-decoration: none; margin-top: 6px; display: inline-flex; align-items: center; gap: 4px;"
+              >📖 개역개정 본문 보기</a>
             </div>
             <div style="display: flex; flex-direction: column; gap: 6px; align-items: flex-end;">
               <button class="small-btn" id="openBookIndexBtn">📚 모세오경 목차</button>
@@ -113,14 +121,13 @@
           <div class="qt-step-card">
             <div class="qt-step-header">
               <span class="step-pill">★</span>
-              <span class="qt-step-title">오늘 나에게 주신 한 줄 제목</span>
+              <span class="qt-step-title">오늘 나에게 주신 마음</span>
             </div>
-            <input
-              type="text"
-              class="qt-input"
-              id="qtSummaryTitle"
-              placeholder="예: 시냇가에 심은 나무처럼 말씀 안에 거하기"
-            />
+            <textarea
+              class="qt-textarea"
+              id="qtMeditation"
+              placeholder="오늘 말씀을 읽으며 내 마음에 주신 은혜와 깨달음을 적어보세요..."
+            ></textarea>
           </div>
 
           <div class="qt-step-card">
@@ -128,62 +135,27 @@
               <span class="step-pill">1</span>
               <span class="qt-step-title">관찰 (Observation)</span>
             </div>
-            <div class="qt-step-desc">본문에서 하나님은 어떤 분이신가요? 눈에 띄는 단어와 약속은 무엇인가요?</div>
             <textarea
               class="qt-textarea"
               id="qtObservation"
-              placeholder="말씀 본문을 천천히 읽으며 발견한 내용을 적어보세요..."
+              placeholder="본문에서 눈에 띄는 말씀, 하나님은 어떤 분이신지 적어보세요..."
             ></textarea>
           </div>
 
           <div class="qt-step-card">
             <div class="qt-step-header">
               <span class="step-pill">2</span>
-              <span class="qt-step-title">느낌 및 묵상 (Meditation)</span>
-            </div>
-            <div class="qt-step-desc">오늘 내 삶의 상황에 비추어 볼 때 주님이 주시는 마음과 깨달음은 무엇인가요?</div>
-            <textarea
-              class="qt-textarea"
-              id="qtMeditation"
-              placeholder="나에게 건네시는 주님의 세미한 음성과 깨달음을 기록해 보세요..."
-            ></textarea>
-          </div>
-
-          <div class="qt-step-card">
-            <div class="qt-step-header">
-              <span class="step-pill">3</span>
               <span class="qt-step-title">적용 (Application)</span>
             </div>
-            <div class="qt-step-desc">오늘 하루 구체적으로 실천할 수 있는 작은 순종 한 가지는 무엇인가요?</div>
             <textarea
               class="qt-textarea"
               id="qtApplication"
-              placeholder="오늘 바로 실천할 수 있는 구체적인 행동을 적어보세요..."
+              placeholder="오늘 바로 실천할 수 있는 구체적인 한 가지를 적어보세요..."
             ></textarea>
             <label class="action-check-row">
               <input type="checkbox" id="qtActionDone" />
               <span>✨ 오늘 결단한 적용 내용을 실제로 실천했습니다!</span>
             </label>
-          </div>
-
-          <div class="qt-step-card">
-            <div class="qt-step-header">
-              <span class="step-pill">4</span>
-              <span class="qt-step-title">기도와 감사 (Prayer &amp; Gratitude)</span>
-            </div>
-            <div class="qt-step-desc">붙잡은 말씀을 가지고 주님께 드리는 기도와 오늘의 감사를 적어보세요.</div>
-            <textarea
-              class="qt-textarea"
-              id="qtPrayer"
-              placeholder="사랑의 주님, 오늘 말씀을 통해..."
-            ></textarea>
-            <input
-              type="text"
-              class="qt-input"
-              id="qtGratitude"
-              style="margin-top: 8px;"
-              placeholder="🙏 오늘의 한 줄 감사 제목"
-            />
           </div>
 
           <div class="save-bar">
