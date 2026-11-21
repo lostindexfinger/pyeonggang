@@ -1158,7 +1158,7 @@ body {
         </div>
         <div>
           <div class="brand-title">날마다, 아멘! <span style="font-size:11px;font-weight:600;color:var(--accent-primary);">평강교회QT</span></div>
-          <div class="brand-subtitle">말씀 한 잎, 오늘 내 마음의 평강</div>
+          <div class="brand-subtitle">오늘 내 마음의 평강</div>
         </div>
       </div>
 
@@ -1437,7 +1437,7 @@ body {
           <span class="badge-tag">100% 기기 내 이중 영구 저장</span>
           <h2 class="passage-title" style="margin-bottom: 8px;">데이터가 절대 지워지지 않게 보호합니다</h2>
           <p style="font-size: 13.5px; color: var(--text-secondary); line-height: 1.65;">
-            날마다평강에 기록하시는 모든 묵상 노트와 기도 제목은 <strong>외부 서버로 일절 전송되지 않으며</strong>,
+            날마다, 아멘!에 기록하시는 모든 묵상 노트와 기도 제목은 <strong>외부 서버로 일절 전송되지 않으며</strong>,
             현재 기기의 <strong>LocalStorage + IndexedDB 두 곳에 실시간으로 동시 이중 저장</strong>됩니다.
           </p>
           <div id="storagePersistStatus" class="font-preview-box" style="margin-top: 10px; font-size: 12.5px; color: var(--accent-primary); font-weight: 600;">
@@ -1602,7 +1602,7 @@ body {
   <div class="lock-overlay" id="pinLockOverlay">
     <div class="modal-box" style="text-align: center;">
       <div style="font-size: 28px; margin-bottom: 6px;">🔒</div>
-      <h3 class="passage-title" id="pinLockTitle">날마다평강 잠금 해제</h3>
+      <h3 class="passage-title" id="pinLockTitle">날마다, 아멘! 잠금 해제</h3>
       <p style="font-size: 12.5px; color: var(--text-muted); margin-top: 4px;" id="pinLockDesc">
         설정하신 4자리 비밀번호를 입력해 주세요.
       </p>
@@ -8343,7 +8343,7 @@ window.QT_DEUTERONOMY = [
     const includeNotes = document.getElementById("shareIncludeNotes")?.checked ?? true;
     const includeLink = document.getElementById("shareIncludeLink")?.checked ?? true;
 
-    const lines = [`🌿 [날마다평강] ${formatKoreanDate(dateKey)}`];
+    const lines = [`🌿 [날마다, 아멘!] ${formatKoreanDate(dateKey)}`];
     if (passage) {
       lines.push(`📖 ${passage.reference} · ${passage.title}`);
       if (includePassage) {
@@ -8369,7 +8369,7 @@ window.QT_DEUTERONOMY = [
 
     const shareUrl = getShareAppUrl();
     if (includeLink && shareUrl) {
-      lines.push(`\n🔗 날마다평강 열기: ${shareUrl}`);
+      lines.push(`\n🔗 날마다, 아멘! 열기: ${shareUrl}`);
     }
     return lines.join("\n");
   }
@@ -8423,8 +8423,8 @@ window.QT_DEUTERONOMY = [
       const shareUrl = getShareAppUrl();
       if (shareUrl) {
         await shareExternally(
-          "날마다평강 - 말씀 한 잎, 하루의 평강",
-          `🌿 날마다평강 말씀묵상 앱에서 함께 묵상해요!\n${shareUrl}`,
+          "날마다, 아멘! - 평강교회QT",
+          `🌿 날마다, 아멘! 말씀묵상 앱에서 함께 묵상해요!\n${shareUrl}`,
           shareUrl
         );
       } else {
@@ -8434,11 +8434,11 @@ window.QT_DEUTERONOMY = [
     }
 
     const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
-    const file = new File([htmlContent], "날마다평강-앱.html", { type: "text/html" });
+    const file = new File([htmlContent], "날마다아멘-앱.html", { type: "text/html" });
     if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
       try {
         await navigator.share({
-          title: "날마다평강 앱",
+          title: "날마다, 아멘! 앱",
           text: "모세오경 묵상 앱입니다. Safari나 Chrome으로 열면 바로 사용하실 수 있습니다.",
           files: [file]
         });
@@ -8452,12 +8452,12 @@ window.QT_DEUTERONOMY = [
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = "날마다평강-앱.html";
+    a.download = "날마다아멘-앱.html";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast("날마다평강-앱.html 파일을 저장했습니다. 이 파일을 카톡·문자로 보내세요! 📲");
+    showToast("날마다아멘-앱.html 파일을 저장했습니다. 이 파일을 카톡·문자로 보내세요! 📲");
   }
 
   // 본문 직접 수정 모달
@@ -8621,7 +8621,7 @@ window.QT_DEUTERONOMY = [
       descEl.textContent = "다른 권으로 넘어갈 때 사용할 새 4자리 숫자를 입력해 주세요.";
       cancelBtn.style.display = "inline-block";
     } else {
-      titleEl.textContent = "날마다평강 잠금 해제";
+      titleEl.textContent = "날마다, 아멘! 잠금 해제";
       descEl.textContent = "설정하신 4자리 비밀번호를 입력해 주세요.";
       cancelBtn.style.display = "none";
     }
@@ -8872,7 +8872,7 @@ window.QT_DEUTERONOMY = [
     if (nativeShareBtn) {
       nativeShareBtn.addEventListener("click", () => {
         const text = document.getElementById("sharePreviewText").value;
-        shareExternally("날마다평강 · 묵상 나눔", text, getShareAppUrl());
+        shareExternally("날마다, 아멘! · 묵상 나눔", text, getShareAppUrl());
       });
     }
     const shareAppLinkBtn = document.getElementById("shareAppLinkBtn");
@@ -8881,8 +8881,8 @@ window.QT_DEUTERONOMY = [
         const shareUrl = getShareAppUrl();
         if (shareUrl) {
           shareExternally(
-            "날마다평강 - 말씀 한 잎, 하루의 평강",
-            `🌿 날마다평강 말씀묵상 앱에서 함께 묵상해요!\n${shareUrl}`,
+            "날마다, 아멘! - 평강교회QT",
+            `🌿 날마다, 아멘! 말씀묵상 앱에서 함께 묵상해요!\n${shareUrl}`,
             shareUrl
           );
         } else {
@@ -9013,7 +9013,7 @@ window.QT_DEUTERONOMY = [
     document.getElementById("exportDataBtn").addEventListener("click", () => {
       const payload = {
         exportedAt: new Date().toISOString(),
-        app: "날마다평강",
+        app: "날마다, 아멘!",
         records,
         customPassages
       };
